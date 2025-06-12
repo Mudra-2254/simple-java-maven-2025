@@ -15,17 +15,10 @@ pipeline {
                 sh 'docker build -t $DOCKER_IMAGE .'
             }
         }
-        stage('Push to Docker Hub') {
-            steps {
-                withDockerRegistry([credentialsId: 'docker-hub-credentials', url: 'https://index.docker.io/v1/']) {
-                     sh 'docker push $DOCKER_IMAGE'
-                }
-            }
-        }
-        stage('Run Container') {
-            steps {
-                sh 'docker run -d --name $CONTAINER_NAME -p 80:80 $DOCKER_IMAGE'
-            }
-        }
-    }
-}  
+       
+        
+       stage('Run Container') {
+    steps {
+        sh 'docker run -d -p 8080:8080 myimage'
+    }
+}
