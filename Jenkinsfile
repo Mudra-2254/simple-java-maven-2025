@@ -19,10 +19,8 @@ pipeline {
 
     }
         
-         stage('Run Container') {
-            steps {
-          sh 'docker run -d --name $CONTAINER_NAME -p 80:80 $DOCKER_IMAGE'
-            }
-        }
-    }
+        stage('Run Container') {
+    steps {
+        sh 'docker run -d -p 8080:8080 myimage'
+    }
 }
