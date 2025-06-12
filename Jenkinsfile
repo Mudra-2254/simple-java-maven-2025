@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        DOCKER_IMAGE = "krisha/docker-app:v1"
+        DOCKER_IMAGE = "nginx"
         CONTAINER_NAME = "my-app"
     }
     stages {
