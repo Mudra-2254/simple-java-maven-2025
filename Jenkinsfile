@@ -4,6 +4,8 @@ pipeline {
     environment {
         DOCKER_IMAGE = "nginx"
         CONTAINER_NAME = "my-app"
+        AWS_ACCESS_KEY_ID = credentials('aws-access-key')     // Jenkins credential ID
+        AWS_SECRET_ACCESS_KEY = credentials('aws-secret-key') // Jenkins credential ID
     }
 
     stages {
@@ -38,7 +40,11 @@ pipeline {
 
         stage('Terraform Apply') {
             steps {
-                sh 'terraform apply -auto-approve'
+                sh '''
+                    terraform apply -auto-approve \
+                        -var="aws_access_key=${AWS_ACCESS_KEY_ID}" \
+                        -var="aws_secret_key=${AWS_SECRET_ACCESS_KEY}"
+                '''
             }
         }
     }
