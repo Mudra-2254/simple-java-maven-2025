@@ -4,8 +4,8 @@ pipeline {
     environment {
         DOCKER_IMAGE = "nginx"
         CONTAINER_NAME = "my-app"
-        AWS_ACCESS_KEY_ID = credentials('aws-access-key')     // Jenkins credential ID
-        AWS_SECRET_ACCESS_KEY = credentials('aws-secret-key') // Jenkins credential ID
+        AWS_ACCESS_KEY_ID = credentials('aws-access-key')     // Must exist in Jenkins
+        AWS_SECRET_ACCESS_KEY = credentials('aws-secret-key') // Must exist in Jenkins
     }
 
     stages {
@@ -45,3 +45,4 @@ pipeline {
         }
     }
 }
+
