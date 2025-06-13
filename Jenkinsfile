@@ -21,7 +21,12 @@ pipeline {
 
         stage('Run Container') {
             steps {
-                sh "docker run -d --name ${CONTAINER_NAME} -p 80:80 ${DOCKER_IMAGE}"
+                sh '''
+                    if [ "$(docker ps -aq -f name=${CONTAINER_NAME})" ]; then
+                        docker rm -f ${CONTAINER_NAME}
+                    fi
+                    docker run -d --name ${CONTAINER_NAME} -p 80:80 ${DOCKER_IMAGE}
+                '''
             }
         }
 
