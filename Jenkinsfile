@@ -1,7 +1,11 @@
 pipeline {
     agent any
 
-    
+    environment {
+        TF_VAR_aws_access_key = credentials('aws-access-key-id')      // From Jenkins credentials
+        TF_VAR_aws_secret_key = credentials('aws-secret-access-key')  // From Jenkins credentials
+    }
+
     stages {
         stage('Checkout Code') {
             steps {
@@ -9,7 +13,6 @@ pipeline {
             }
         }
 
-       
         stage('Terraform Init') {
             steps {
                 sh 'terraform init'
@@ -23,4 +26,3 @@ pipeline {
         }
     }
 }
-
