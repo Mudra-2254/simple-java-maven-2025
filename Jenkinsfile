@@ -55,9 +55,12 @@ pipeline {
         }
     }
 
-    post {
-        always {
-            cleanWs()
+   post {
+    always {
+        script {
+            node {
+                cleanWs()
+            }
         }
     }
 }
