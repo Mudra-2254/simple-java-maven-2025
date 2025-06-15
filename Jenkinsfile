@@ -1,11 +1,14 @@
 pipeline {
     agent any
 
-    environment {
-        AWS_DEFAULT_REGION     = 'ap-south-1'
-        AWS_ACCESS_KEY_ID      = credentials('aws-access-key-id')
-        AWS_SECRET_ACCESS_KEY  = credentials('aws-secret-access-key')
-    }
+  withCredentials([
+    string(credentialsId: 'aws-access-key-id', variable: 'AWS_ACCESS_KEY_ID'),
+    string(credentialsId: 'aws-secret-access-key', variable: 'AWS_SECRET_ACCESS_KEY')
+]) {
+    sh 'terraform init -input=false'
+    // ...
+    sh 'aws s3 cp terraform.tfstate s3://terraformbkt121'
+}
 
     stages {
         stage('Checkout Code') {
