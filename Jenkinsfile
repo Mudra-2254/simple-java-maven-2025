@@ -11,9 +11,7 @@ pipeline {
         stage('Terraform init') {
             steps {
                 script {
-                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-access-key-id']]) 
-                    {
-                    
+                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-credentials']]) {
                         sh 'terraform init -input=false'
                     }
                 }
@@ -47,10 +45,7 @@ pipeline {
         stage('Upload State to S3') {
             steps {
                 script {
-                    withCredentials([
-                        string(credentialsId: 'aws-access-key-id', variable: 'AWS_ACCESS_KEY_ID'),
-                        string(credentialsId: 'aws-secret-access-key', variable: 'AWS_SECRET_ACCESS_KEY')
-                    ]) {
+                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-credentials']]) {
                         sh 'aws s3 cp terraform.tfstate s3://terraformbkt121'
                     }
                 }
