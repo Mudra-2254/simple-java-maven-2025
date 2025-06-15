@@ -55,12 +55,13 @@ pipeline {
         }
     }
 
-   post {
-    always {
-        script {
-            node {
-                cleanWs()
+    post {
+        always {
+            script {
+                node {
+                    cleanWs()
+                }
             }
         }
     }
-}
+} // <- This closing brace was missing
