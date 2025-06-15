@@ -1,15 +1,6 @@
 pipeline {
     agent any
 
-  withCredentials([
-    string(credentialsId: 'aws-access-key-id', variable: 'AWS_ACCESS_KEY_ID'),
-    string(credentialsId: 'aws-secret-access-key', variable: 'AWS_SECRET_ACCESS_KEY')
-]) {
-    sh 'terraform init -input=false'
-    // ...
-    sh 'aws s3 cp terraform.tfstate s3://terraformbkt121'
-}
-
     stages {
         stage('Checkout Code') {
             steps {
@@ -20,7 +11,12 @@ pipeline {
         stage('Terraform Init') {
             steps {
                 script {
-                    sh 'terraform init -input=false'
+                    withCredentials([
+                        string(credentialsId: 'aws-access-key-id', variable: 'AWS_ACCESS_KEY_ID'),
+                        string(credentialsId: 'aws-secret-access-key', variable: 'AWS_SECRET_ACCESS_KEY')
+                    ]) {
+                        sh 'terraform init -input=false'
+                    }
                 }
             }
         }
@@ -52,7 +48,12 @@ pipeline {
         stage('Upload State to S3') {
             steps {
                 script {
-                    sh 'aws s3 cp terraform.tfstate s3://terraformbkt121'
+                    withCredentials([
+                        string(credentialsId: 'aws-access-key-id', variable: 'AWS_ACCESS_KEY_ID'),
+                        string(credentialsId: 'aws-secret-access-key', variable: 'AWS_SECRET_ACCESS_KEY')
+                    ]) {
+                        sh 'aws s3 cp terraform.tfstate s3://terraformbkt121'
+                    }
                 }
             }
         }
@@ -60,11 +61,7 @@ pipeline {
 
     post {
         always {
-            script {
-                node {
-                    cleanWs()
-                }
-            }
+            cleanWs()
         }
     }
-} // <- This closing brace was missing
+}
